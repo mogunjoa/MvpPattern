@@ -24,14 +24,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySearchBinding
     lateinit var adapter : MovieAdapter
-    var list = MutableLiveData<List<Item>>()
+//    var list = MutableLiveData<List<Item>>()
     var movieList = ArrayList<Item>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
 
-        adapter = MovieAdapter(this)
+        adapter = MovieAdapter(this, movieList)
         binding.rvMovieList.adapter = adapter
         binding.btSearch.setOnClickListener(this)
     }
@@ -67,7 +67,8 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
                 Log.d("통신", "아쥬 성공적이구만?")
                 println("응답데이터:"+response.body()?.items)
 
-                list.value = response.body()?.items
+                response.body()?.items?.let { movieList.addAll(it) }
+                adapter.notifyDataSetChanged()
             }
 
             override fun onFailure(call: Call<Movie?>, t: Throwable) {

@@ -3,26 +3,21 @@ package kr.co.bonjin.naverapimvp.model.adapter
 import android.content.Context
 import android.text.Html
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kr.co.bonjin.naverapimvp.R
-import kr.co.bonjin.naverapimvp.databinding.ActivitySearchBinding
 import kr.co.bonjin.naverapimvp.databinding.ItemMovieBinding
 import kr.co.bonjin.naverapimvp.model.vo.Item
 
 
-class MovieAdapter(context: Context) :
+class MovieAdapter(context: Context, movieList: ArrayList<Item>) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     private val mContext: Context = context
-    private val mMovieInfoArrayList = ArrayList<Item>()
+    private val mMovieInfoArrayList = movieList
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -44,17 +39,6 @@ class MovieAdapter(context: Context) :
     ) {
         holder.bind(mMovieInfoArrayList[position])
 
-//        movieViewHolder.mTvTitle.text = Html.fromHtml(item.title)
-//        movieViewHolder.mRbUserRating.rating = item.userRating.toFloat() / 2
-//        movieViewHolder.mTvPubData.text = item.pubDate
-//        movieViewHolder.mTvDirector.text = Html.fromHtml(item.director)
-//        movieViewHolder.mTvActor.text = Html.fromHtml(item.actor)
-
-//        Glide.with(mContext)
-//            .load(mMovieInfoArrayList[position].image)
-//            .diskCacheStrategy(DiskCacheStrategy.ALL)
-//            .into(movieViewHolder)
-
     }
 
     override fun getItemCount(): Int {
@@ -75,8 +59,21 @@ class MovieAdapter(context: Context) :
     inner class MovieViewHolder(private val binding: ItemMovieBinding) :
     RecyclerView.ViewHolder(binding.root){
 
-        init {
 
+
+        init {
+            var position = adapterPosition+1
+
+            Glide.with(mContext)
+                .load(mMovieInfoArrayList[position].image)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(binding.ivPoster)
+
+            binding.tvTitle.text = Html.fromHtml(mMovieInfoArrayList[position].title)
+            binding.rbUserRating.rating = mMovieInfoArrayList[position].userRating.toFloat() / 2
+            binding.tvPubData.text = mMovieInfoArrayList[position].pubDate
+            binding.tvDirector.text = Html.fromHtml(mMovieInfoArrayList[position].director)
+            binding.tvActor.text = Html.fromHtml(mMovieInfoArrayList[position].actor)
         }
 
         fun bind(items: Item) {
