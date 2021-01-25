@@ -1,12 +1,11 @@
 package kr.co.bonjin.naverapimvp.view
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
 import kr.co.bonjin.naverapimvp.R
 import kr.co.bonjin.naverapimvp.common.Const
 import kr.co.bonjin.naverapimvp.databinding.ActivitySearchBinding
@@ -23,8 +22,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySearchBinding
-    lateinit var adapter : MovieAdapter
-//    var list = MutableLiveData<List<Item>>()
+    lateinit var adapter: MovieAdapter
+    private var apiService = ApiService()
+
+
+    //    var list = MutableLiveData<List<Item>>()
     var movieList = ArrayList<Item>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,56 +38,47 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         binding.btSearch.setOnClickListener(this)
     }
 
-    private fun setUI(){
-        binding.rvMovieList
+    private fun setUI() {}
 
-    }
+    private fun setUpRecyclerView() {}
 
-    private fun setUpRecyclerView(){
-
-    }
-
-    fun startSearch(title: String) {
+    private fun startSearch(title: String) {
         if (title.isEmpty()) {
             Toast.makeText(this, "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show()
         } else {
-            getMovieList(title)
+            getMovieList(title, this)
         }
     }
 
-    private fun getMovieList(title: String){
-        val retrofit = Retrofit.Builder()
-            .baseUrl(Const.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    private fun getMovieList(title: String, context: Context) {
+        apiService
+            .createService(Api::class.java)
+            .getMovies(title, 100, 1)
+            ?.enqueue(object : Callback<Movie?> {
+                override fun onFailure(call: Call<Movie?>, t: Throwable) {
+                    Toast.makeText(context, "서버통신에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                }
 
-        val api = retrofit.create(Api::class.java)
-        val callGetSearchMovie = api.getMovies(title, 100, 1)
-
-        callGetSearchMovie?.enqueue(object : Callback<Movie?> {
-            override fun onResponse(call: Call<Movie?>, response: Response<Movie?>) {
-                Log.d("통신", "아쥬 성공적이구만?")
-                println("응답데이터:"+response.body()?.items)
-
-                response.body()?.items?.let { movieList.addAll(it) }
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onFailure(call: Call<Movie?>, t: Throwable) {
-                Log.d("통신", "죶되버렸고만?")
-            }
-        })
-
-
-
+                override fun onResponse(call: Call<Movie?>, response: Response<Movie?>) {
+                    if (response.body()?.items.isNullOrEmpty()) {
+                        Toast.makeText(context, "검색결과가 없습니다.", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+                    response.body()?.items?.let {
+                        movieList.addAll(it)
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+            })
     }
 
     override fun onClick(v: View?) {
-        when(v){
+        when (v) {
             binding.btSearch -> {
-                getMovieList(binding.etSearch.text.toString())
+                movieList.clear()
+                startSearch(binding.etSearch.text.toString())
             }
-
         }
     }
+
 }

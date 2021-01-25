@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -37,8 +38,11 @@ class MovieAdapter(context: Context, movieList: ArrayList<Item>) :
         holder: MovieViewHolder,
         position: Int
     ) {
-        holder.bind(mMovieInfoArrayList[position])
-
+        holder.bind()
+//        mMovieInfoArrayList[position]
+        holder.itemView.setOnClickListener {
+            Toast.makeText(mContext, "몇번쨰고$position", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -57,28 +61,22 @@ class MovieAdapter(context: Context, movieList: ArrayList<Item>) :
     }
 
     inner class MovieViewHolder(private val binding: ItemMovieBinding) :
-    RecyclerView.ViewHolder(binding.root){
+        RecyclerView.ViewHolder(binding.root) {
 
-
-
-        init {
-            var position = adapterPosition+1
+        fun bind() {
+            binding.tvTitle.text = Html.fromHtml(mMovieInfoArrayList[position].title)
+            binding.rbUserRating.rating = mMovieInfoArrayList[position].userRating.toFloat() / 2
+            binding.tvPubData.text = mMovieInfoArrayList[position].pubDate
+            binding.tvDirector.text = Html.fromHtml(mMovieInfoArrayList[position].director)
+            binding.tvActor.text = Html.fromHtml(mMovieInfoArrayList[position].actor)
 
             Glide.with(mContext)
                 .load(mMovieInfoArrayList[position].image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.ivPoster)
 
-            binding.tvTitle.text = Html.fromHtml(mMovieInfoArrayList[position].title)
-            binding.rbUserRating.rating = mMovieInfoArrayList[position].userRating.toFloat() / 2
-            binding.tvPubData.text = mMovieInfoArrayList[position].pubDate
-            binding.tvDirector.text = Html.fromHtml(mMovieInfoArrayList[position].director)
-            binding.tvActor.text = Html.fromHtml(mMovieInfoArrayList[position].actor)
-        }
-
-        fun bind(items: Item) {
-            binding.movieItem = items
-            binding.executePendingBindings()
+//            binding.movieItem = items
+//            binding.executePendingBindings()
         }
 
     }
