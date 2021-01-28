@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class ApiService {
+object ApiService {
     private var mRetrofit: Retrofit? = null
     private val gson = GsonBuilder().create()
 
