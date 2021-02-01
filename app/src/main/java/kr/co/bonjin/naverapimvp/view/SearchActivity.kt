@@ -5,11 +5,13 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import kr.co.bonjin.naverapimvp.BaseActivity
 import kr.co.bonjin.naverapimvp.R
+import kr.co.bonjin.naverapimvp.common.SearchContract
 import kr.co.bonjin.naverapimvp.databinding.ActivitySearchBinding
 import kr.co.bonjin.naverapimvp.model.adapter.MovieAdapter
+import kr.co.bonjin.naverapimvp.model.vo.Item
 import kr.co.bonjin.naverapimvp.presenter.SearchPresenter
 
-class SearchActivity : BaseActivity(), View.OnClickListener {
+class SearchActivity : BaseActivity(), SearchContract.View, View.OnClickListener {
     private lateinit var searchPresenter: SearchPresenter
     private lateinit var binding: ActivitySearchBinding
     lateinit var adapter: MovieAdapter
@@ -20,9 +22,6 @@ class SearchActivity : BaseActivity(), View.OnClickListener {
 
         searchPresenter.takeView(this)
 
-        adapter = MovieAdapter(this, movieList)
-        binding.rvMovieList.adapter = adapter
-        binding.btSearch.setOnClickListener(this)
     }
 
     override fun initPresenter() {
@@ -32,6 +31,12 @@ class SearchActivity : BaseActivity(), View.OnClickListener {
     private fun setUI() {}
 
     private fun setUpRecyclerView() {}
+
+    override fun showMovieList(movieList: ArrayList<Item>){
+        adapter = MovieAdapter(this, movieList)
+        binding.rvMovieList.adapter = adapter
+        binding.btSearch.setOnClickListener(this)
+    }
 
 
     override fun onClick(v: View?) {

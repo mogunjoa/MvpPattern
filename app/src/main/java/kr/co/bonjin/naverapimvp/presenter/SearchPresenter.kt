@@ -36,6 +36,7 @@ class SearchPresenter : SearchContract.Presenter {
                     Toast.makeText(context, "서버에서 데이터를 불러오지 못하였다 이노옴!", Toast.LENGTH_SHORT).show()
                 }
             )
+
         }
     }
 

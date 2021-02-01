@@ -8,7 +8,7 @@ import org.json.JSONObject
 interface SearchContract {
 
     interface View {
-        fun showMovieList(movieList: List<Item>)
+        fun showMovieList(movieList: ArrayList<Item>)
     }
 
     interface Presenter : BasePresenter<View> {
