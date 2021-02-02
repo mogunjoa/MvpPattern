@@ -15,12 +15,14 @@ class SearchActivity : BaseActivity(), SearchContract.View, View.OnClickListener
     private lateinit var searchPresenter: SearchPresenter
     private lateinit var binding: ActivitySearchBinding
     lateinit var adapter: MovieAdapter
+    var movieList = ArrayList<Item>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
 
         searchPresenter.takeView(this)
+        binding.btSearch.setOnClickListener(this)
 
     }
 
@@ -28,14 +30,10 @@ class SearchActivity : BaseActivity(), SearchContract.View, View.OnClickListener
         searchPresenter = SearchPresenter()
     }
 
-    private fun setUI() {}
-
-    private fun setUpRecyclerView() {}
-
-    override fun showMovieList(movieList: ArrayList<Item>){
+    override fun showMovieList(movieList: ArrayList<Item>) {
         adapter = MovieAdapter(this, movieList)
         binding.rvMovieList.adapter = adapter
-        binding.btSearch.setOnClickListener(this)
+        adapter.notifyDataSetChanged()
     }
 
 
@@ -44,9 +42,15 @@ class SearchActivity : BaseActivity(), SearchContract.View, View.OnClickListener
             binding.btSearch -> {
                 searchPresenter.getMovieList(
                     title = binding.etSearch.text.toString(),
-                    context = this
+                    context = this,
+                    successHandler = {
+                        movieList.clear()
+                        movieList.addAll(it.items)
+                        showMovieList(movieList)
+                    }
                 )
             }
+
         }
     }
 

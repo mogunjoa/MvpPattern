@@ -16,13 +16,13 @@ import retrofit2.Response
 class SearchPresenter : SearchContract.Presenter {
     private var searchView: SearchContract.View? = null
     private var movieRepository = MovieRepository()
-    var movieList = ArrayList<Item>()
 
     override fun takeView(view: SearchContract.View) {
         searchView = view
     }
 
-    override fun getMovieList(title: String, context: Context) {
+    override fun getMovieList(title: String, context: Context, successHandler: (Movie) -> Unit) {
+
         if (title.isEmpty()) {
             Toast.makeText(context, "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show()
             return
@@ -30,14 +30,14 @@ class SearchPresenter : SearchContract.Presenter {
             movieRepository.getMovieList(
                 title = title,
                 success = {
-                    movieList.addAll(it.items)
+                    successHandler(it)
                 },
                 failure = {
                     Toast.makeText(context, "서버에서 데이터를 불러오지 못하였다 이노옴!", Toast.LENGTH_SHORT).show()
                 }
             )
-
         }
+
     }
 
     override fun dropView() {
