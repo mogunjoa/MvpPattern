@@ -28,7 +28,6 @@ class MovieRepository {
                     failure(t)
                 }
             })
-
     }
 
 

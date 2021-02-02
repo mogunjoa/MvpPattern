@@ -1,10 +1,9 @@
-package kr.co.bonjin.naverapimvp.model.adapter
+package kr.co.bonjin.naverapimvp.view.adapter
 
 import android.content.Context
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide

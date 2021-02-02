@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import kr.co.bonjin.naverapimvp.BaseActivity
 import kr.co.bonjin.naverapimvp.R
-import kr.co.bonjin.naverapimvp.common.SearchContract
+import kr.co.bonjin.naverapimvp.contract.SearchContract
 import kr.co.bonjin.naverapimvp.databinding.ActivitySearchBinding
-import kr.co.bonjin.naverapimvp.model.adapter.MovieAdapter
+import kr.co.bonjin.naverapimvp.view.adapter.MovieAdapter
 import kr.co.bonjin.naverapimvp.model.vo.Item
 import kr.co.bonjin.naverapimvp.presenter.SearchPresenter
 

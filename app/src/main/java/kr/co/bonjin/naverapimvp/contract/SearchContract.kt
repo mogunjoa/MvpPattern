@@ -1,4 +1,4 @@
-package kr.co.bonjin.naverapimvp.common
+package kr.co.bonjin.naverapimvp.contract
 
 import kr.co.bonjin.naverapimvp.model.vo.Item
 import kr.co.bonjin.naverapimvp.model.vo.Movie
