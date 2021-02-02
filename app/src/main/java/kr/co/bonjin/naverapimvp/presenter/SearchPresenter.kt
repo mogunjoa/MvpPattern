@@ -1,11 +1,11 @@
 package kr.co.bonjin.naverapimvp.presenter
 
 import kr.co.bonjin.naverapimvp.contract.SearchContract
-import kr.co.bonjin.naverapimvp.model.repository.MovieRepository
+import kr.co.bonjin.naverapimvp.model.repository.MovieRepositoryImpl
 import kr.co.bonjin.naverapimvp.model.vo.Movie
 
 class SearchPresenter : SearchContract.Presenter {
-    private var movieRepository = MovieRepository()
+    private var movieRepository = MovieRepositoryImpl()
 
     override fun getMovieList(
         title: String,
@@ -22,6 +22,7 @@ class SearchPresenter : SearchContract.Presenter {
                     successHandler(it)
                 },
                 failure = {
+                    failHandler(it.toString())
                 }
             )
         }

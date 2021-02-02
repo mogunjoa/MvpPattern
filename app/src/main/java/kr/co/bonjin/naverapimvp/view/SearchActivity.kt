@@ -22,7 +22,6 @@ class SearchActivity : BaseActivity(), SearchContract.View, View.OnClickListener
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
 
-        searchPresenter.takeView(this)
         binding.btSearch.setOnClickListener(this)
     }
 
