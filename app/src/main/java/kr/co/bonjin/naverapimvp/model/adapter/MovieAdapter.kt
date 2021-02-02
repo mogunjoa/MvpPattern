@@ -39,10 +39,6 @@ class MovieAdapter(context: Context, movieList: ArrayList<Item>) :
         position: Int
     ) {
         holder.bind()
-//        mMovieInfoArrayList[position]
-        holder.itemView.setOnClickListener {
-            Toast.makeText(mContext, "몇번쨰고$position", Toast.LENGTH_SHORT).show()
-        }
     }
 
     override fun getItemCount(): Int {
@@ -74,9 +70,6 @@ class MovieAdapter(context: Context, movieList: ArrayList<Item>) :
                 .load(mMovieInfoArrayList[position].image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.ivPoster)
-
-//            binding.movieItem = items
-//            binding.executePendingBindings()
         }
 
     }

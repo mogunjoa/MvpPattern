@@ -2,6 +2,7 @@ package kr.co.bonjin.naverapimvp.view
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import kr.co.bonjin.naverapimvp.BaseActivity
 import kr.co.bonjin.naverapimvp.R
@@ -23,7 +24,6 @@ class SearchActivity : BaseActivity(), SearchContract.View, View.OnClickListener
 
         searchPresenter.takeView(this)
         binding.btSearch.setOnClickListener(this)
-
     }
 
     override fun initPresenter() {
@@ -36,17 +36,22 @@ class SearchActivity : BaseActivity(), SearchContract.View, View.OnClickListener
         adapter.notifyDataSetChanged()
     }
 
+    override fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
 
     override fun onClick(v: View?) {
         when (v) {
             binding.btSearch -> {
                 searchPresenter.getMovieList(
                     title = binding.etSearch.text.toString(),
-                    context = this,
                     successHandler = {
                         movieList.clear()
                         movieList.addAll(it.items)
                         showMovieList(movieList)
+                    },
+                    failHandler = {
+                        showToast(it)
                     }
                 )
             }
